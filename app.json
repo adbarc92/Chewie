@@ -1,0 +1,84 @@
+{
+  "name": "Chewie",
+  "scripts": {
+  },
+  "env": {
+    "ADMIN_EMAIL": {
+      "required": true
+    },
+    "ADMIN_PWD": {
+      "required": true
+    },
+    "ENV": {
+      "required": true
+    },
+    "GIT_TOKEN": {
+      "required": true
+    },
+    "GITHUB_CALLBACK_URL": {
+      "required": true
+    },
+    "GITHUB_CLIENT_ID1": {
+      "required": true
+    },
+    "GITHUB_CLIENT_ID2": {
+      "required": true
+    },
+    "GITHUB_CLIENT_SECRET1": {
+      "required": true
+    },
+    "GITHUB_CLIENT_SECRET2": {
+      "required": true
+    },
+    "GOOGLE_CLIENT_ID1": {
+      "required": true
+    },
+    "GOOGLE_CLIENT_ID2": {
+      "required": true
+    },
+    "GOOGLE_CLIENT_SECRET1": {
+      "required": true
+    },
+    "GOOGLE_CLIENT_SECRET2": {
+      "required": true
+    },
+    "HOST_NAME": {
+      "required": true
+    },
+    "HUBSPOT_API": {
+      "required": true
+    },
+    "LRS_PWD": {
+      "required": true
+    },
+    "LRS_USER": {
+      "required": true
+    },
+    "MDL_WEB_TOKEN": {
+      "required": true
+    },
+    "MONGODB_URI": {
+      "required": true
+    },
+    "SENDGRID_PASSWORD": {
+      "required": true
+    },
+    "SENDGRID_USERNAME": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "mongolab",
+    "sendgrid"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}

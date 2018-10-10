@@ -1,0 +1,68 @@
+{
+  "_meta": {
+    "sources": [
+      "../common/models",
+      "./models",
+      "./node_modules/loopback-component-passport/lib/models"
+    ]
+  },
+  "Email": {
+    "dataSource": "myEmailDataSource"
+  },
+  "user": {
+    "dataSource": "MongoDB",
+    "public": true,
+    "options": {
+      "emailVerificationRequired": true
+    }
+  },
+  "accessToken": {
+    "dataSource": "MongoDB",
+    "public": true
+  },
+  "userCredential": {
+    "dataSource": "MongoDB",
+    "public": true
+  },
+  "userIdentity": {
+    "dataSource": "MongoDB",
+    "public": true
+  },
+  "ACL": {
+    "dataSource": "MongoDB",
+    "public": true
+  },
+  "RoleMapping": {
+    "dataSource": "MongoDB",
+    "public": true
+  },
+  "Role": {
+    "dataSource": "MongoDB",
+    "public": true
+  },
+  "Proxy": {
+    "dataSource": null,
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "notifyLateStudents": true,
+          "getAllCourses": true,
+          "getAssignmentsByCourseId": true,
+          "getUngradedSubmissions": true,
+          "getRandomGifByTagFH": true,
+          "getRandomGifByTagFW": true,
+          "notifyLateStudentsByStudents": true,
+          "getScoreCard": true,
+          "getPrepCourseStats": true,
+          "setXapiState": true,
+          "getXapiState": true,
+          "destroyXapiState": true,
+          "validateStudentByEmail": true,
+          "checkIn": true
+        }
+      }
+    }
+  }
+}

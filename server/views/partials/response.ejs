@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head.ejs'); %>
+<body style="padding-top: 70px;">
+  <%- include('../partials/navigation.ejs'); %>
+  <main class="jumbotron">
+    <div class="content container">
+        <% if (typeof content !== 'undefined') { %>
+          <p><%= content %></p>
+        <% } %>
+      </div>
+  </main>
+  <%- include('../partials/footer.ejs'); %>
+</body>
+</html>
