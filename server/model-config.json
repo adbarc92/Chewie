@@ -46,21 +46,59 @@
     "options": {
       "remoting": {
         "sharedMethods": {
+          "*": true
+        }
+      }
+    }
+  },
+  "DNC": {
+    "dataSource": "MongoDB",
+    "public": true,
+    "options" : {
+      "remoting": {
+        "sharedMethods": {
           "*": false,
-          "notifyLateStudents": true,
-          "getAllCourses": true,
-          "getAssignmentsByCourseId": true,
-          "getUngradedSubmissions": true,
-          "getRandomGifByTagFH": true,
-          "getRandomGifByTagFW": true,
-          "notifyLateStudentsByStudents": true,
-          "getScoreCard": true,
-          "getPrepCourseStats": true,
-          "setXapiState": true,
-          "getXapiState": true,
-          "destroyXapiState": true,
-          "validateStudentByEmail": true,
-          "checkIn": true
+          "count": true,
+          "find": true,
+          "findById": true
+        }
+      }
+    }
+  },
+  "Account": {
+    "dataSource": "MongoDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {}
+      }
+    }
+  },
+  "Message": {
+    "dataSource": "MongoDB",
+    "public": true,
+    "options" : {
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "count": true,
+          "find": true,
+          "findById": true
+        }
+      }
+    }
+  },
+  "Lead": {
+    "dataSource": "MongoDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "count": true,
+          "find": true,
+          "findById": true,
+          "__findById__messages": true
         }
       }
     }
