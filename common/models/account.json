@@ -1,0 +1,78 @@
+{
+  "name": "Account",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "CompanyName": {
+      "type": "string"
+    },
+    "paymentToken": {
+      "type": "string"
+    },
+    "streetAddress1": {
+      "type": "string",
+      "required": true
+    },
+    "streetAddress2": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string",
+      "required": true
+    },
+    "state": {
+      "type": "string",
+      "required": true
+    },
+    "postalCode": {
+      "type": "string",
+      "required": true
+    },
+    "responsibleParty": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string",
+      "required": true
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "active": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "user": {
+      "type": "belongsTo",
+      "model": "user",
+      "foreignKey": "userId",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "leads": {
+      "type": "hasMany",
+      "model": "Lead",
+      "foreignKey": "aId",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "dNCs": {
+      "type": "hasMany",
+      "model": "DNC",
+      "foreignKey": "aId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

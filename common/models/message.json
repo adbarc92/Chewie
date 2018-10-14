@@ -1,0 +1,51 @@
+{
+  "name": "Message",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "in": {
+      "type": "boolean",
+      "description": "is inbound",
+      "required": true
+    },
+    "fr": {
+      "type": "string",
+      "description": "from phone or email",
+      "required": true
+    },
+    "to": {
+      "type": "string",
+      "description": "to phone or email",
+      "required": true
+    },
+    "tx": {
+      "type": "string",
+      "description": "text body of the message"
+    },
+    "sb": {
+      "type": "string",
+      "description": "subject line of the message"
+    },
+    "sc": {
+      "type": "number",
+      "description": "sentiment score"
+    },
+    "rv": {
+      "type": "boolean",
+      "description": "was reviewed"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "lead": {
+      "type": "belongsTo",
+      "model": "Lead",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

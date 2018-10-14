@@ -1,6 +1,7 @@
 module.exports = (app) => {
   const User = app.models.user;
   const Role = app.models.Role;
+  const Account = app.models.Account;
   const RoleMapping = app.models.RoleMapping;
 
   User.findOrCreate({
@@ -18,6 +19,31 @@ module.exports = (app) => {
     },
     (err, user) => {
       if (err) console.log(err);
+
+      Account.findOrCreate({
+        where: {
+          CompanyName: 'Chewie',
+        },
+      },
+        {
+          CompanyName: 'Chewie',
+          paymentToken: 'NONE',
+          streetAddress1: 'NONE',
+          streetAddress2: 'NONE',
+          city: 'San Diego',
+          state: 'CA',
+          postalCode: '92129',
+          responsibleParty: 'admin',
+          email: 'test@test.com',
+          phone: '9999999999',
+          active: true,
+          userId: user.id
+        }, (errAccount, result) => {
+          if (errAccount) console.log(errAccount);
+          console.log('The admin account info is:');
+          console.log(result);
+        }
+      );
 
       Role.findOrCreate({
         where: {

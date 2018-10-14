@@ -53,6 +53,12 @@ The default admin username is `admin`. You must set the admin's default password
 process.env.ADMIN_PASSWORD='';
 ```
 
+## Contracts
+
+Review the tests in `tests/server/models/account.spec.js`
+
+---
+
 ## Local login
 
 To use local strategy you must verify the email address.

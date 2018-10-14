@@ -13,7 +13,7 @@ export function getUserCount(token) {
     })
       .then(response => response.data.count)
       .catch((error) => {
-        console.log(error)
+        console.log(error);
       })
   };
 }

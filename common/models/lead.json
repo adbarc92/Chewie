@@ -1,0 +1,50 @@
+{
+  "name": "Lead",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "em": {
+      "type": "string",
+      "description": "email address",
+      "required": true
+    },
+    "ph": {
+      "type": "string",
+      "description": "phone number",
+      "required": true
+    },
+    "fn": {
+      "type": "string",
+      "description": "first name"
+    },
+    "ln": {
+      "type": "string",
+      "description": "last name"
+    },
+    "hs": {
+      "type": "string",
+      "description": "hubspot id"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "messages": {
+      "type": "hasMany",
+      "model": "Message",
+      "foreignKey": "aId",
+      "options": {
+        "nestRemoting": false
+      }
+    },
+    "account": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "aId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

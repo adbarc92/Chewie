@@ -23,55 +23,9 @@
     "phoneNumber": {
       "type": "string"
     },
-    "moodleUserId": {
-      "type": "number"
-    },
-    "wakatimeApiKey": {
-      "type": "string"
-    },
-    "trackId": {
-      "type": "string"
-    },
-    "studentType": {
-      "type": "string"
-    },
-    "scheduleId": {
-      "type": "string"
-    },
-    "mockData": {
-      "type": "boolean",
-      "default": false
-    },
     "disabled": {
       "type": "boolean",
       "default": false
-    },
-    "inClass": {
-      "type": "boolean",
-      "default": false
-    },
-    "enrolled": {
-      "type": "boolean",
-      "required": true,
-      "default": true
-    },
-    "accountabilityPartnerEmailId": {
-      "type": "string"
-    },
-    "accountabilityPartnerEmailAddress": {
-      "type": "string"
-    },
-    "accountabilityPartnerComment": {
-      "type": "string"
-    },
-    "accountabilityPartnerFirstName": {
-      "type": "string"
-    },
-    "accountabilityPartnerLastName": {
-      "type": "string"
-    },
-    "dateUpdated": {
-      "type": "date"
     }
   },
   "validations": [],

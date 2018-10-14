@@ -1,0 +1,27 @@
+{
+  "name": "DNC",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "ph": {
+      "type": "string",
+      "required": true
+    },
+    "tx": {
+      "type": "boolean"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "account": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "aId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
