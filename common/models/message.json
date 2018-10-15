@@ -8,18 +8,18 @@
   "properties": {
     "in": {
       "type": "boolean",
-      "description": "is inbound",
-      "required": true
+      "required": true,
+      "description": "is inbound"
     },
     "fr": {
       "type": "string",
-      "description": "from phone or email",
-      "required": true
+      "required": true,
+      "description": "from phone or email"
     },
     "to": {
       "type": "string",
-      "description": "to phone or email",
-      "required": true
+      "required": true,
+      "description": "to phone or email"
     },
     "tx": {
       "type": "string",

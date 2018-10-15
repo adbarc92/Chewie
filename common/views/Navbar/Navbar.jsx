@@ -18,6 +18,7 @@ export default class Navbar extends Component {
             <a href="#">test</a>
           </div>
         </li>
+        <li><a href="/auth/account#/leads">Leads</a></li>
         <li><a href="/auth/account#/users">Users</a></li>
         <li><a href="/auth/account#/account">My Account</a></li>
         <li><a href="/auth/logout">Log Out</a></li>

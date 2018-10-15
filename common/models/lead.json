@@ -8,13 +8,13 @@
   "properties": {
     "em": {
       "type": "string",
-      "description": "email address",
-      "required": true
+      "required": true,
+      "description": "email address"
     },
     "ph": {
       "type": "string",
-      "description": "phone number",
-      "required": true
+      "required": true,
+      "description": "phone number"
     },
     "fn": {
       "type": "string",
