@@ -236,14 +236,17 @@ app.get('/auth/logout', (req, res) => {
 });
 
 app.get('/auth/*', ensureLoggedIn('/login'), ensureEnabled, (req, res) => {
+  const { Account } = app.models;
   isAdminRole(req)
     .then((user) => {
       user.brand = req.brand;
-      res.render('pages/app', {
-        user,
-        url: req.url,
-        brand: req.brand
-      });
+      Account.findOne({ userId: user.id })
+        .then(account => res.render('pages/app', {
+          account,
+          user,
+          url: req.url,
+          brand: req.brand
+        }));
     })
     .catch(errAdmin => console.log(errAdmin));
 });

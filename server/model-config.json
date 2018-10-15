@@ -54,13 +54,10 @@
   "DNC": {
     "dataSource": "MongoDB",
     "public": true,
-    "options" : {
+    "options": {
       "remoting": {
         "sharedMethods": {
-          "*": false,
-          "count": true,
-          "find": true,
-          "findById": true
+          "*": true
         }
       }
     }
@@ -70,20 +67,19 @@
     "public": true,
     "options": {
       "remoting": {
-        "sharedMethods": {}
+        "sharedMethods": {
+          "*": true
+        }
       }
     }
   },
   "Message": {
     "dataSource": "MongoDB",
     "public": true,
-    "options" : {
+    "options": {
       "remoting": {
         "sharedMethods": {
-          "*": false,
-          "count": true,
-          "find": true,
-          "findById": true
+          "*": true
         }
       }
     }
@@ -94,11 +90,18 @@
     "options": {
       "remoting": {
         "sharedMethods": {
-          "*": false,
-          "count": true,
-          "find": true,
-          "findById": true,
-          "__findById__messages": true
+          "*": true
+        }
+      }
+    }
+  },
+  "SMSPhone": {
+    "dataSource": "MongoDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "*": true
         }
       }
     }
