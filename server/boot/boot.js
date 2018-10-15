@@ -1,3 +1,7 @@
+const { receiveFromQueue } = require('../utils/rabbitmq');
+
+receiveFromQueue();
+
 module.exports = (app) => {
   const User = app.models.user;
   const Role = app.models.Role;
@@ -40,8 +44,6 @@ module.exports = (app) => {
           userId: user.id
         }, (errAccount, result) => {
           if (errAccount) console.log(errAccount);
-          console.log('The admin account info is:');
-          console.log(result);
         }
       );
 
