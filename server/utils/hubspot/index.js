@@ -30,13 +30,13 @@ const sendMessageToHubSpot = (args) => {
   };
   console.log(url, data2post);
   return axios.post(url, data2post)
-  .catch(e => console.log(e));
+    .then(response => response.data);
 };
 
 const handleInboundMessageToHubSpot = (message) => {
   const { Lead } = app.models;
   // TODO: handle message.hubSpotId == undefined
-  Lead.findOne({ id: message.leadId })
+  Lead.findOne({ where: { id: message.leadId } })
     .then((lead) => {
       const finalMessage = {
         body: message.tx,
@@ -44,8 +44,7 @@ const handleInboundMessageToHubSpot = (message) => {
         sid: '#'
       };
       return sendMessageToHubSpot({ message: finalMessage, hubSpotId: lead.hs });
-    })
-    .catch(e => console.log(e));
+    });
 };
 
 module.exports = {
