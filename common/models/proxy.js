@@ -59,7 +59,7 @@ module.exports = (Proxy) => {
         aId,
         leadId
       })
-      .then(() => Lead.findOne({ id: leadId })
+      .then(() => Lead.findOne({ where: { id: leadId, ph: to } })
           .then(lead => sendMessageToHubSpot({ message: response, hubSpotId: lead.hs })
               .then(() => cb(null, response))
             )

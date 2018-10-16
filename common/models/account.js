@@ -10,7 +10,7 @@ module.exports = function(Account) {
       return Promise.resolve(process.env.ADMIN_ACCOUNT_ID);
     }
     // else lookup the sms number and return the account id
-    return new Promise((resolve, reject) => SMSPhone.findOne({ phone })
+    return new Promise((resolve, reject) => SMSPhone.findOne({ where: { phone } })
       .then(smsPhone => resolve(smsPhone.aId))
       .catch(e => reject(e)));
   };
@@ -18,7 +18,7 @@ module.exports = function(Account) {
   Account.getLeadByPhone = (aId, phone) => {
     const { Lead } = Account.app.models;
 
-    return new Promise((resolve, reject) => Lead.findOne({ aId, phone })
+    return new Promise((resolve, reject) => Lead.findOne({ where: { aId, phone } })
       .then(lead => resolve(lead))
       .catch(e => reject(e)));
   };
