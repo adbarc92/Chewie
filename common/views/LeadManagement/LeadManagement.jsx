@@ -20,12 +20,12 @@ export default class LeadManagement extends Component {
     this.setState({ quickMessage: e.target.value });
   }
 
-  send(lead) {
-    this.props.sendSMSMessage(this.props.user.token, this.state.quickMessage, lead);
+  send(lead, aId) {
+    this.props.sendSMSMessage(this.props.user.token, this.state.quickMessage, lead, aId);
   }
 
   render() {
-    const { user, leads } = this.props;
+    const { user, leads, account } = this.props;
     return (
       <div>
         <h1>Leads</h1>
@@ -49,7 +49,7 @@ export default class LeadManagement extends Component {
             </div>
           </div>
           <hr />
-          {leads && <Table leads={leads} send={this.send} />}
+          {leads && <Table leads={leads} send={this.send} aId={account.id} />}
         </div>}
         {!user.isAdmin && <h3>You are not authorized to view this page.</h3>}
       </div>

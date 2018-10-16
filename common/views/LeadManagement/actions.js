@@ -25,9 +25,9 @@ export function getAllLeads(token, aId) {
   };
 }
 
-export function sendSMSMessage(token, message, lead) {
+export function sendSMSMessage(token, message, lead, aId) {
   const urlBase = '/api/Proxies/sendLeadSMSMessage?';
-  const urlParams = `body=${message}&to=${lead.ph}&from=18588159018&leadId=${lead.id}`
+  const urlParams = `body=${message}&to=${lead.ph}&from=18588159018&leadId=${lead.id}&aId=${aId}`;
   return {
     type: SEND_SMS_MESSAGE,
     payload: axios({

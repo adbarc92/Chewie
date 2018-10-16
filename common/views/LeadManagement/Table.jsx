@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Row from './Row';
 
-const Table = ({ leads, send }) => (
+const Table = ({ leads, send, aId }) => (
   <table className={'table'}>
     <thead>
       <tr>
@@ -18,7 +18,7 @@ const Table = ({ leads, send }) => (
       </tr>
     </thead>
     <tbody>
-      {leads.map(lead => <Row key={lead.hs} lead={lead} send={send} />)}
+      {leads.map(lead => <Row key={lead.hs} lead={lead} send={send} aId={aId} />)}
     </tbody>
   </table>
 );
