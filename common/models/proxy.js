@@ -101,7 +101,7 @@ module.exports = (Proxy) => {
 
     // get account
     getAccountByPhone(sanitizedTo)
-      .then(aId => Account.getLeadByPhone(aId, sanitizedTo)
+      .then(aId => Account.getLeadByPhone(aId, sanitizedFrom)
         .then(lead => Message.create({
           in: true,
           fr: sanitizedFrom,
