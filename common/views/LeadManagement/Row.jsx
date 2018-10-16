@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Row = ({ lead, send }) => (
+const Row = ({ lead, send, aId }) => (
     <tr>
     <td>
       {lead.fn}
@@ -28,7 +28,7 @@ const Row = ({ lead, send }) => (
       <a href={`/auth/account#/#`}>Details </a>
     </td>
     <td>
-      <button className='btn btn-xs btn-success' onClick={() => send(lead)}>SEND SMS</button>
+      <button className='btn btn-xs btn-success' onClick={() => send(lead, aId)}>SEND SMS</button>
     </td>
   </tr>
 );
