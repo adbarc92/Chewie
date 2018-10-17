@@ -120,6 +120,7 @@
     "socketio-auth": "^0.1.1",
     "strong-error-handler": "^1.1.0",
     "style-loader": "^0.19.1",
+    "twilio": "^3.22.0",
     "webpack": "^3.6.0",
     "webpack-stream": "^4.0.0",
     "winston": "^2.4.0",

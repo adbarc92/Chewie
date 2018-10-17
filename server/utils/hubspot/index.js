@@ -1,84 +1,53 @@
 const axios = require('axios');
-const _ = require('lodash');
 const winston = require('winston');
 require('winston-loggly-bulk');
+
+const app = require('../../server');
 
 if (process.env.NODE_ENV === 'development') {
   require('../../../credentials.js');
 }
 
-const apikey = process.env.HUBSPOT_API;
+const hapikey = process.env.HUBSPOT_API;
 
-const getWakatimeByEmail = email =>
-  axios.get(`https://api.hubapi.com/contacts/v1/contact/email/${email}/profile?hapikey=${apikey}`)
-    .then(result => _.get(result, 'data.properties.wakatime_api_key.value', null))
-    .catch(err => err);
+const sendMessageToHubSpot = (args) => {
+  const { message, hubSpotId } = args;
+  const url = `https://api.hubapi.com/engagements/v1/engagements?hapikey=${hapikey}`;
 
-const getUserByEmail = email =>
-  axios.get(`https://api.hubapi.com/contacts/v1/contact/email/${email}/profile?hapikey=${apikey}`)
-    .then(result => result)
-    .catch(err => err);
+  const note = `<h1>SMS MESSAGE</h1><p><b>Body: </b>${message.body}</p><p><b>Direction: </b>${message.direction}</p><p><a href="https://www.twilio.com/console/sms/logs/${message.sid}" target="_blank">${message.sid}</a><p>`;
 
-const sendCommentToHubSpot = (args) => {
-  const { email, comment } = args;
-
-  return new Promise(async (resolve, reject) => {
-    try {
-      let url = `https://api.hubapi.com/contacts/v1/contact/email/${email}/profile?hapikey=${apikey}`;
-      const { data } = await axios.get(url);
-      const vid = data.vid;
-
-      // We got the user id (vid), now post the comment
-      // i.e. attach a note to the contact.
-      url = `https://api.hubapi.com/engagements/v1/engagements?hapikey=${apikey}`;
-
-      const data2post = {
-        engagement: {
-          active: true,
-          type: 'NOTE'
-        },
-        associations: {
-          contactIds: [vid],
-        },
-        metadata: {
-          body: comment
-        }
-      };
-
-      await axios.post(url, data2post);
-      resolve('OK');
-    } catch (err) {
-      reject(err.message);
+  const data2post = {
+    engagement: {
+      active: true,
+      type: 'NOTE'
+    },
+    associations: {
+      contactIds: [hubSpotId]
+    },
+    metadata: {
+      body: note
     }
-  });
+  };
+  console.log(url, data2post);
+  return axios.post(url, data2post)
+    .then(response => response.data);
 };
 
-const sendContactToHubspot = (firstname, lastname, email, phone) => {
-  winston.log('info', 'new hubspot contact', { firstname, lastname, email, phone });
-  return axios({
-    method: 'post',
-    url: `https://forms.hsforms.com/uploads/form/v2/${process.env.HUBSPOT_ID}/${process.env.HUBSPOT_FORM_COURSE_SIGNUP}?firstname=${firstname}&lastname=${lastname}&email=${email}&phone=${phone}&actual_lead_source=Prep+Course+Flow`,
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-  })
-    .then(response => response)
-    .catch(err => err);
-};
-
-const sendCourseCompletionToHubspot = (email, coursesCompleted) => {
-  winston.log('info', 'course complete', { email, coursesCompleted });
-  return axios({
-    method: 'post',
-    url: `https://forms.hubspot.com/uploads/form/v2/${process.env.HUBSPOT_ID}/${process.env.HUBSPOT_FORM_COURSE_COMPLETED}?email=${email}&coursescompleted=${coursesCompleted}`,
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-  })
-    .then(response => response)
-    .catch(err => err);
+const handleInboundMessageToHubSpot = (message) => {
+  const { Lead } = app.models;
+  // TODO: handle message.hubSpotId == undefined
+  Lead.findOne({ where: { id: message.leadId } })
+    .then((lead) => {
+      const finalMessage = {
+        body: message.tx,
+        direction: 'inbound',
+        sid: '#'
+      };
+      return sendMessageToHubSpot({ message: finalMessage, hubSpotId: lead.hs });
+    });
 };
 
 module.exports = {
-  getWakatimeByEmail,
-  getUserByEmail,
-  sendContactToHubspot,
-  sendCourseCompletionToHubspot,
-  sendCommentToHubSpot
+  sendMessageToHubSpot,
+  handleInboundMessageToHubSpot
 };

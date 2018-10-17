@@ -28,7 +28,7 @@ describe('User Model', function() {
     };
 
     const mockAccountData = {
-      CompanyName: 'TEST COMPANY',
+      companyName: 'TEST COMPANY',
       streetAddress1: '123 Some Street',
       city: 'San Diego',
       state: 'CA',
@@ -138,7 +138,7 @@ describe('User Model', function() {
     });
 
     const destroyAccount = () => new Promise((resolve, reject) => {
-      Account.remove({ CompanyName: 'TEST COMPANY' }, (errRemoveAccount) => {
+      Account.remove({ companyName: 'TEST COMPANY' }, (errRemoveAccount) => {
         if (errRemoveAccount) reject(errRemoveAccount);
         resolve();
       });
@@ -264,6 +264,7 @@ describe('User Model', function() {
       .set('Authorization', authToken)
       .type('form')
       .send({
+        in: true,
         to: '6192224444',
         fr: '6192224444',
         fn: 'TEST',
@@ -284,6 +285,7 @@ describe('User Model', function() {
       .set('Authorization', authToken)
       .type('form')
       .send({
+        in: true,
         to: '6192224444',
         fr: '6192224444',
         fn: 'TEST',

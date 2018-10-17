@@ -8,6 +8,7 @@ import LoginFormPage from '../Login/Login';
 import Navbar from '../Navbar/NavbarPage';
 import UserDetailsPage from '../UserDetails/UserDetailsPage';
 import UserManagementPage from '../UserManagement/UserManagementPage';
+import LeadManagementPage from '../LeadManagement/LeadManagementPage';
 
 
 class App extends Component {
@@ -29,6 +30,7 @@ class App extends Component {
                 <Route path="/local" component={LoginFormPage} />
                 <Route path="/account" component={AccountPage} />
                 <Route path="/users" component={UserManagementPage} />
+                <Route path="/leads" component={LeadManagementPage} />
                 <Route path="/user/:id" component={UserDetailsPage} />
               </Switch>
             </div>
