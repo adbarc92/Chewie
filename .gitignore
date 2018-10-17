@@ -36,3 +36,4 @@ build
 .nyc_output
 coverage
 user-data.json
+awsCredentials.json
