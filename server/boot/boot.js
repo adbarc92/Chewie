@@ -4,7 +4,6 @@ module.exports = (app) => {
   const Account = app.models.Account;
   const SMSPhone = app.models.SMSPhone;
   const Role = app.models.Role;
-  const Account = app.models.Account;
   const RoleMapping = app.models.RoleMapping;
 
   let account;
