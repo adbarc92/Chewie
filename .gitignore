@@ -36,4 +36,7 @@ build
 .nyc_output
 coverage
 user-data.json
-awsCredentials.json
+
+.aws
+server/utils/lambda/*/node_modules
+server/utils/lambda/*/.aws

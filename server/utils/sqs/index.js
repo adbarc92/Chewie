@@ -1,6 +1,5 @@
 const AWS = require('aws-sdk');
 
-AWS.config.loadFromPath(`${__dirname}/credentials.json`);
 const sqs = new AWS.SQS({ apiVersion: '2012-11-05' });
 
 module.exports = {
@@ -10,21 +9,21 @@ module.exports = {
     const params = {
       DelaySeconds: 0,
       MessageAttributes: {
-        "to": {
-          DataType: "String",
+        to: {
+          DataType: 'String',
           StringValue: `+1${to}`
         },
-        "from": {
-          DataType: "String",
+        from: {
+          DataType: 'String',
           StringValue: `+1${from}`
         },
-        "message": {
-          DataType: "String",
+        message: {
+          DataType: 'String',
           StringValue: message
         }
       },
-      MessageBody: message,
-      QueueUrl: "https://sqs.us-west-1.amazonaws.com/509241310344/sendToTwilio"
+      MessageBody: 'Sent message to Twilio',
+      QueueUrl: process.env.SEND_TO_TWILIO_QUEUE
     };
 
     sqs.sendMessage(params, (err, data) => {
@@ -39,13 +38,13 @@ module.exports = {
   receiveUserDncQueue() {
     const params = {
       AttributeNames: [
-          "SentTimestamp"
+        'SentTimestamp'
       ],
       MaxNumberOfMessages: 10,
       MessageAttributeNames: [
-          "All"
+        'All'
       ],
-      QueueUrl: 'https://sqs.us-west-1.amazonaws.com/509241310344/saveUserDncQueue',
+      QueueUrl: process.env.SAVE_USER_DNC_QUEUE,
       VisibilityTimeout: 20,
       WaitTimeSeconds: 0
     };
@@ -56,7 +55,7 @@ module.exports = {
       } else if (data.Messages) {
         data.Messages.forEach((message) => {
           const deleteParams = {
-            QueueUrl: 'https://sqs.us-west-1.amazonaws.com/509241310344/saveUserDncQueue',
+            QueueUrl: process.env.SAVE_USER_DNC_QUEUE,
             ReceiptHandle: message.ReceiptHandle
           };
           sqs.deleteMessage(deleteParams, (error, datas) => {
@@ -74,13 +73,13 @@ module.exports = {
   receiveUserResponseQueue() {
     const params = {
       AttributeNames: [
-          "SentTimestamp"
+        'SentTimestamp'
       ],
       MaxNumberOfMessages: 10,
       MessageAttributeNames: [
-          "All"
+        'All'
       ],
-      QueueUrl: 'https://sqs.us-west-1.amazonaws.com/509241310344/saveUserResponse',
+      QueueUrl: process.env.SAVE_USER_RESPONSE_QUEUE,
       VisibilityTimeout: 20,
       WaitTimeSeconds: 0
     };
@@ -91,7 +90,7 @@ module.exports = {
       } else if (data.Messages) {
         data.Messages.forEach((message) => {
           const deleteParams = {
-            QueueUrl: 'https://sqs.us-west-1.amazonaws.com/509241310344/saveUserResponse',
+            QueueUrl: process.env.SAVE_USER_RESPONSE_QUEUE,
             ReceiptHandle: message.ReceiptHandle
           };
           sqs.deleteMessage(deleteParams, (error, datas) => {
