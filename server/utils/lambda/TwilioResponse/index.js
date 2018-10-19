@@ -8,9 +8,13 @@ exports.handler = (event, context, callback) => {
   {
     DelaySeconds: 0,
     MessageAttributes: {
-      p: {
+      leadPhone: {
         DataType: 'String',
         StringValue: event.From
+      },
+      campaignPhone: {
+        DataType: 'String',
+        StringValue: event.To
       }
     },
     MessageBody: event.Body,
@@ -19,13 +23,13 @@ exports.handler = (event, context, callback) => {
   {
     DelaySeconds: 0,
     MessageAttributes: {
-      fr: {
-        DataType: 'String',
-        StringValue: event.To
-      },
-      p: {
+      leadPhone: {
         DataType: 'String',
         StringValue: event.From
+      },
+      campaignPhone: {
+        DataType: 'String',
+        StringValue: event.To
       }
     },
     MessageBody: event.Body,

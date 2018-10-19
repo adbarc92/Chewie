@@ -1,105 +1,8 @@
 const AWS = require('aws-sdk');
-const axios = require('axios');
-const Agenda = require('agenda');
+const { Account, DNC, Message } = require('../../server').models;
 
 AWS.config.update({ region: 'us-west-1' });
 const sqs = new AWS.SQS({ apiVersion: '2012-11-05' });
-
-const mongoConnectionString = `mongodb://${process.env.MONGO_HOST}/agenda` || `mongodb:${process.env.MONGODB_URI}/agenda`;
-const agenda = new Agenda({ db: { address: mongoConnectionString } });
-
-agenda.define('receiveDncQueue', () => {
-  console.log('[ ]Checking DNC Queue...');
-  const params = {
-    AttributeNames: [
-      'SentTimestamp'
-    ],
-    MaxNumberOfMessages: 10,
-    MessageAttributeNames: [
-      'All'
-    ],
-    QueueUrl: process.env.DNC_QUEUE,
-    VisibilityTimeout: 20,
-    WaitTimeSeconds: 20
-  };
-
-  sqs.receiveMessage(params, (err, data) => {
-    if (err) {
-      console.log('Receive Error', err);
-    } else if (data.Messages) {
-      data.Messages.forEach((message) => {
-        axios.post('http://localhost:3030/api/DNCs', {
-          ph: message.MessageAttributes.p.StringValue.replace('+1', ''),
-          tx: true
-        })
-        .then(() => {
-          const deleteParams = {
-            QueueUrl: process.env.DNC_QUEUE,
-            ReceiptHandle: message.ReceiptHandle
-          };
-          sqs.deleteMessage(deleteParams, (error, datas) => {
-            if (error) {
-              console.log('Delete Error', err);
-            } else {
-              console.log('DNC Message Deleted', datas);
-            }
-          });
-        })
-        .catch(error => console.log(error));
-      });
-    }
-  });
-});
-
-agenda.define('receiveResponseQueue', () => {
-  console.log('Checking Response Queue');
-  const params = {
-    AttributeNames: [
-      'SentTimestamp'
-    ],
-    MaxNumberOfMessages: 10,
-    MessageAttributeNames: [
-      'All'
-    ],
-    QueueUrl: process.env.RESPONSE_QUEUE,
-    VisibilityTimeout: 20,
-    WaitTimeSeconds: 20
-  };
-
-  sqs.receiveMessage(params, (err, data) => {
-    if (err) {
-      console.log('Receive Error', err);
-    } else if (data.Messages) {
-      data.Messages.forEach((message) => {
-        axios.post('http://localhost:3030/api/Messages', {
-          in: true,
-          fr: message.MessageAttributes.fr.StringValue.replace('+1', ''),
-          to: message.MessageAttributes.p.StringValue.replace('+1', ''),
-          tx: message.Body,
-        })
-        .then(() => {
-          const deleteParams = {
-            QueueUrl: process.env.RESPONSE_QUEUE,
-            ReceiptHandle: message.ReceiptHandle
-          };
-          sqs.deleteMessage(deleteParams, (error, datas) => {
-            if (error) {
-              console.log('Delete Error', err);
-            } else {
-              console.log('Response Message Deleted', datas);
-            }
-          });
-        })
-        .catch(error => console.log(error));
-      });
-    }
-  });
-});
-
-agenda.on('ready', () => {
-  agenda.every('1 minute', ['receiveResponseQueue', 'receiveDncQueue']);
-  agenda.start();
-});
 
 module.exports = {
   sendCampaignMessages(campaign) {
@@ -132,6 +35,111 @@ module.exports = {
       });
 
       delaySeconds += 1;
+    });
+  },
+  receiveDncQueue() {
+    const params = {
+      AttributeNames: [
+        'SentTimestamp'
+      ],
+      MaxNumberOfMessages: 10,
+      MessageAttributeNames: [
+        'All'
+      ],
+      QueueUrl: process.env.DNC_QUEUE,
+      VisibilityTimeout: 20,
+      WaitTimeSeconds: 20
+    };
+
+    sqs.receiveMessage(params, (err, data) => {
+      if (err) {
+        console.log('Receive Error', err);
+      } else if (data.Messages) {
+        data.Messages.forEach((message) => {
+          const campaignPhone = message.MessageAttributes.campaignPhone.StringValue.replace('+1', '');
+          const leadPhone = message.MessageAttributes.leadPhone.StringValue.replace('+1', '');
+
+          Account.getAccountByPhone(campaignPhone)
+            .then((aId) => {
+              DNC.findOrCreate({ where: { ph: leadPhone } }, {
+                ph: leadPhone,
+                tx: true,
+                aId
+              })
+                .then(() => {
+                  const deleteParams = {
+                    QueueUrl: process.env.DNC_QUEUE,
+                    ReceiptHandle: message.ReceiptHandle
+                  };
+                  sqs.deleteMessage(deleteParams, (error, datas) => {
+                    if (error) {
+                      console.log('Delete Error', err);
+                    } else {
+                      console.log('DNC Message Deleted', datas);
+                    }
+                  });
+                })
+                .catch(error => console.log(error));
+            });
+        });
+      }
+    });
+  },
+  receiveResponseQueue() {
+    const params = {
+      AttributeNames: [
+        'SentTimestamp'
+      ],
+      MaxNumberOfMessages: 10,
+      MessageAttributeNames: [
+        'All'
+      ],
+      QueueUrl: process.env.RESPONSE_QUEUE,
+      VisibilityTimeout: 20,
+      WaitTimeSeconds: 20
+    };
+
+    sqs.receiveMessage(params, (err, data) => {
+      if (err) {
+        console.log('Receive Error', err);
+      } else if (data.Messages) {
+        data.Messages.forEach((message) => {
+          const leadPhone = message.MessageAttributes.leadPhone.StringValue.replace('+1', '');
+          const campaignPhone = message.MessageAttributes.campaignPhone.StringValue.replace('+1', ''); 
+          const messageBody = message.Body;
+
+          Account.getAccountByPhone(campaignPhone)
+            .then((account) => {
+              Account.getLeadByPhone(account.aId, leadPhone)
+                .then((lead) => {
+                  Message.create({
+                    in: true,
+                    fr: leadPhone,
+                    to: campaignPhone,
+                    tx: messageBody,
+                    aId: account.aId,
+                    leadId: lead.id
+                  })
+                  .then(() => {
+                    const deleteParams = {
+                      QueueUrl: process.env.RESPONSE_QUEUE,
+                      ReceiptHandle: message.ReceiptHandle
+                    };
+                    sqs.deleteMessage(deleteParams, (error, datas) => {
+                      if (error) {
+                        console.log('Delete Error', err);
+                      } else {
+                        console.log('Response Message Deleted', datas);
+                      }
+                    });
+                  })
+                  .catch(error => console.log('Message.create Error', error));
+                })
+                .catch(error => console.log('getLeadByPhone Error', error));
+            })
+            .catch(errors => console.log('getAccountByPhone Error', errors));
+        });
+      }
     });
   }
 };
