@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 
+AWS.config.update({ region: 'us-west-1' });
 const sqs = new AWS.SQS({ apiVersion: '2012-11-05' });
 
 exports.handler = (event, context, callback) => {
@@ -10,13 +11,9 @@ exports.handler = (event, context, callback) => {
       p: {
         DataType: 'String',
         StringValue: event.From
-      },
-      body: {
-        DataType: 'String',
-        StringValue: event.Body
-      },
+      }
     },
-    MessageBody: 'Sent to saveUserDncQueue.',
+    MessageBody: event.Body,
     QueueUrl: process.env.saveUserDncQueue
   } :
   {
@@ -29,13 +26,9 @@ exports.handler = (event, context, callback) => {
       p: {
         DataType: 'String',
         StringValue: event.From
-      },
-      body: {
-        DataType: 'String',
-        StringValue: event.Body
       }
     },
-    MessageBody: 'Sent to saveUserResponseQueue.',
+    MessageBody: event.Body,
     QueueUrl: process.env.saveUserResponseQueue
   };
 

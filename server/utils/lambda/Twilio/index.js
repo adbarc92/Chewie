@@ -1,11 +1,11 @@
 const client = require('twilio')(process.env.accountSid, process.env.authToken);
 
 exports.handler = (event, context, callback) => {
-  const { to, from, message } = event.Records[0].messageAttributes;
+  const { to, from } = event.Records[0].messageAttributes;
 
   return client.messages
     .create({
-      body: message.stringValue,
+      body: event.Records[0].body,
       from: from.stringValue,
       to: to.stringValue
     })
