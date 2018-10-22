@@ -4,8 +4,9 @@ import { routerReducer } from 'react-router-redux';
 
 import dashboard from './views/Dashboard/reducer';
 import userManagement from './views/UserManagement/reducer';
-import leadManagement from './views/LeadManagement/reducer';
 import userDetails from './views/UserDetails/reducer';
+import leadManagement from './views/LeadManagement/reducer';
+import leadDetails from './views/LeadDetails/reducer';
 
 const reducers = combineReducers({
   form: reduxFormReducer,
@@ -14,6 +15,7 @@ const reducers = combineReducers({
   routing: routerReducer,
   userManagement,
   leadManagement,
+  leadDetails,
   dashboard,
   userDetails,
 });

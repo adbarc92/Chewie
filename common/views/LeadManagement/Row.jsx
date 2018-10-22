@@ -25,7 +25,7 @@ const Row = ({ lead, send, aId }) => (
       {lead.em}
     </td>
     <td>
-      <a href={`/auth/account#/#`}>Details </a>
+      <a href={`/auth/account#/lead/${lead.id}`}>Details </a>
     </td>
     <td>
       <button className='btn btn-xs btn-success' onClick={() => send(lead, aId)}>SEND SMS</button>
