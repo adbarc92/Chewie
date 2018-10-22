@@ -6,7 +6,11 @@ export default function (state = { details: {} }, action = {}) {
       return { ...state, error: action.payload };
     case 'SAVE_LEAD_DETAILS_FULFILLED':
       return { ...state, saved: action.payload };
-    case 'SAVE_LEAD_DETAILS_REJECTED':
+    case 'SAVE_MESSAGES_REJECTED':
+      return { ...state, error: action.payload };
+    case 'GET_MESSAGES_FULFILLED':
+      return { ...state, messages: action.payload };
+    case 'GET_MESSAGES_REJECTED':
       return { ...state, error: action.payload };
     case 'SEND_COMMENT_TO_HUBSPOT_FULFILLED':
       return { ...state, hubspotCommentSent: action.payload };

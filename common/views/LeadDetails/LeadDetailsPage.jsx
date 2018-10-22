@@ -7,6 +7,7 @@ import * as LeadDetailsActions from './actions';
 function mapStateToProps({ leadDetails, user, form }) {
   return {
     details: leadDetails.details,
+    messages: leadDetails.messages,
     user,
     form
   };

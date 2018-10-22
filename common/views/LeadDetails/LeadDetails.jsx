@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import LeadDetailsForm from './LeadDetailsForm';
+import { getMessages } from './actions';
+import Table from './Table';
 
 export default class LeadDetails extends Component {
   constructor(props) {
@@ -12,8 +14,9 @@ export default class LeadDetails extends Component {
   }
 
   componentWillMount(props) {
-    const { getLeadDetails, match, dispatch, user } = this.props;
+    const { getLeadDetails, getMessages, match, dispatch, user } = this.props;
     getLeadDetails(match.params.id, user.token);
+    getMessages(match.params.id, user.token);
   }
 
   saveLeadDetails = (redirectAfterSave=false) => {
@@ -93,10 +96,10 @@ export default class LeadDetails extends Component {
   render() {
     const mockProfile = { profile: { displayName: 'none' } };
     const { profile } = this.props.user.profiles[0] || mockProfile;
-    const { user, message } = this.props;
+    const { user, message, messages } = this.props;
     return (
       <div>
-        <h1>User</h1>
+        <h1>Lead</h1>
         {user.isAdmin && <div>
           <div className="container">
             <div className="row">
@@ -112,6 +115,9 @@ export default class LeadDetails extends Component {
               </div>
             </div>
             <div>Status: {this.state.message}</div>
+            <div className="row">
+              {messages && <Table messages={messages} />}
+            </div>
           </div>
         </div>}
         {!user.isAdmin && <h3>You are not authorized to view this page.

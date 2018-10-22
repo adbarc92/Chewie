@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const GET_LEAD_DETAILS = 'GET_LEAD_DETAILS';
+export const GET_MESSAGES = 'GET_MESSAGES';
 export const SAVE_LEAD_DETAILS = 'SAVE_LEAD_DETAILS';
 export const SEND_COMMENT_TO_HUBSPOT = 'SEND_COMMENT_TO_HUBSPOT';
 
@@ -26,6 +27,18 @@ export function saveLeadDetails(data, token) {
       data,
       headers: { Authorization: token }
     })
+  };
+}
+
+export function getMessages(id, token) {
+  return {
+    type: GET_MESSAGES,
+    payload: axios({
+      method: 'get',
+      url: `/api/Messages?filter[where][leadId]=${id}`,
+      headers: { Authorization: token }
+    })
+    .then(response => response.data)
   };
 }
 
