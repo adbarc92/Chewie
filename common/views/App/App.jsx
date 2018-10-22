@@ -9,6 +9,7 @@ import Navbar from '../Navbar/NavbarPage';
 import UserDetailsPage from '../UserDetails/UserDetailsPage';
 import UserManagementPage from '../UserManagement/UserManagementPage';
 import LeadManagementPage from '../LeadManagement/LeadManagementPage';
+import LeadDetailsPage from '../LeadDetails/LeadDetailsPage';
 
 
 class App extends Component {
@@ -32,6 +33,7 @@ class App extends Component {
                 <Route path="/users" component={UserManagementPage} />
                 <Route path="/leads" component={LeadManagementPage} />
                 <Route path="/user/:id" component={UserDetailsPage} />
+                <Route path="/lead/:id" component={LeadDetailsPage} />
               </Switch>
             </div>
           </div>
