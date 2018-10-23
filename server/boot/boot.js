@@ -1,3 +1,6 @@
+const { startAgenda } = require('../../server/utils/sqs');
+
+startAgenda();
 
 module.exports = (app) => {
   const User = app.models.user;
