@@ -33,7 +33,7 @@ const sendMessageToHubSpot = (args) => {
     .then(response => response.data);
 };
 
-const handleInboundMessageToHubSpot = (message) => {
+const handleInboundMessageToHubSpot = (message, MessageSid) => {
   const { Lead } = app.models;
   // TODO: handle message.hubSpotId == undefined
   Lead.findOne({ where: { id: message.leadId } })
@@ -41,7 +41,7 @@ const handleInboundMessageToHubSpot = (message) => {
       const finalMessage = {
         body: message.tx,
         direction: 'inbound',
-        sid: '#'
+        sid: MessageSid
       };
       return sendMessageToHubSpot({ message: finalMessage, hubSpotId: lead.hs });
     });

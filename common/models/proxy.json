@@ -1,7 +1,7 @@
 {
   "name": "Proxy",
   "plural": "Proxies",
-  "base": "",
+  "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
