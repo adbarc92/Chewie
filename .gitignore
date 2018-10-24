@@ -40,4 +40,3 @@ user-data.json
 .aws
 server/utils/lambda/*/node_modules
 server/utils/lambda/*/.aws
-AWSReadme.md
