@@ -1,6 +1,6 @@
-const { receiveFromQueue } = require('../utils/rabbitmq');
+const { startAgenda } = require('../../server/utils/sqs');
 
-receiveFromQueue();
+startAgenda();
 
 module.exports = (app) => {
   const User = app.models.user;

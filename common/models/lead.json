@@ -34,7 +34,7 @@
     "messages": {
       "type": "hasMany",
       "model": "Message",
-      "foreignKey": "aId",
+      "foreignKey": "leadId",
       "options": {
         "nestRemoting": false
       }
