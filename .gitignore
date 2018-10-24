@@ -3,7 +3,7 @@ backups
 # Logs
 logs
 *.log
-
+*.zip
 # Runtime data
 pids
 *.pid
