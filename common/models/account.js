@@ -6,7 +6,7 @@ module.exports = function(Account) {
 
     // since we have limited number of phones/accounts
     // if phone matche admin's, no need to look up account #
-    if (phone === process.env.PHONE_1 || phone === process.env.PHONE_1) {
+    if (phone === process.env.PHONE_1 || phone === process.env.PHONE_2) {
       return Promise.resolve(process.env.ADMIN_ACCOUNT_ID);
     }
     // else lookup the sms number and return the account id

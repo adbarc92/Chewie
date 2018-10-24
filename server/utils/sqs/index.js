@@ -123,7 +123,7 @@ module.exports = {
         MessageAttributes: {
           to: {
             DataType: 'String',
-            StringValue: `1${lead.ph}`
+            StringValue: `+1${lead.ph}`
           },
           from: {
             DataType: 'String',
