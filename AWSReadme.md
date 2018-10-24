@@ -21,10 +21,6 @@ SQS
 - Add 20 second Receive Message Wait Time
 - Create permissions
 
-- Create dead letter queue to handle messages lambda couldnt send
-- Add 20 second Receive Message Wait Time
-- Create permissions
-
 
 Lambda
 
