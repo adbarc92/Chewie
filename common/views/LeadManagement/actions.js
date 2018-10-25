@@ -17,7 +17,7 @@ export function getAllLeads(token, aId) {
     type: GET_ALL_LEADS,
     payload: axios({
       method: 'get',
-      url: `/api/Accounts/${aId}/leads`,
+      url: `/api/Accounts/${aId}/leads?filter[include]=messages`,
       headers: { Authorization: token }
     })
     // .then(response => ({ leads: formatData(response.data) }))

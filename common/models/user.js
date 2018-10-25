@@ -32,7 +32,7 @@ module.exports = (user) => {
     ],
     http: { path: '/isAdminRole', verb: 'get' }
   });
-
+  
   const getAdminByID = x =>
     new Promise((resolve, reject) =>
       user.findById(x.principalId)
