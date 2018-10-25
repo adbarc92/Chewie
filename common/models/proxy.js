@@ -111,7 +111,7 @@ module.exports = (Proxy) => {
             aId,
             leadId: lead.id
           })
-        .then(message => handleInboundMessageToHubSpot(message, MessageSid))
+        .then(message => handleInboundMessageToHubSpot(message))
         .then(result => cb(null, result)))
       )
       .catch(err => cb(err, Body));
