@@ -41,7 +41,7 @@
     "public": true
   },
   "Proxy": {
-    "dataSource": null,
+    "dataSource": "MongoDB",
     "public": true,
     "options": {
       "remoting": {

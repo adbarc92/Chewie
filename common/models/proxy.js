@@ -103,14 +103,14 @@ module.exports = (Proxy) => {
     getAccountByPhone(sanitizedTo)
       .then(aId => Account.getLeadByPhone(aId, sanitizedFrom)
         .then(lead => Message.create({
-          in: true,
-          fr: sanitizedFrom,
-          to: sanitizedTo,
-          tx: Body,
-          rv: false,
-          aId,
-          leadId: lead.id
-        })
+            in: true,
+            fr: sanitizedFrom,
+            to: sanitizedTo,
+            tx: Body,
+            rv: false,
+            aId,
+            leadId: lead.id
+          })
         .then(message => handleInboundMessageToHubSpot(message))
         .then(result => cb(null, result)))
       )
