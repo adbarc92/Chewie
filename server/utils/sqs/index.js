@@ -182,7 +182,7 @@ module.exports = {
             StringValue: `+1${fr}`
           },
         },
-        MessageBody: message,
+        MessageBody: message.replace('FIRST_NAME', lead.fn ? lead.fn  : '').replace('LAST_NAME', lead.ln ? lead.ln  : ''),
         QueueUrl: process.env.SEND_TO_TWILIO_QUEUE
       };
 
