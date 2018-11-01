@@ -1,6 +1,8 @@
 module.exports = (Proxy) => {
   const client = require('twilio')(process.env.SMS_ACCOUNT_SID, process.env.SMS_AUTH_TOKEN);
   const { sendMessageToHubSpot, handleInboundMessageToHubSpot } = require('../../server/utils/hubspot');
+ const { sendCampaignMessages } = require('../../server/utils/sqs');
+
 
   Proxy.sendTestSMS = (body, to, from, cb) => {
     client.messages
@@ -45,6 +47,26 @@ module.exports = (Proxy) => {
       { arg: 'data', type: 'string' },
     ]
   });
+
+  
+  Proxy.sendCampaignToQueue = (message, cb) => {
+    console.log('server', message);
+    sendCampaignMessages(message)
+    cb(null, message)
+  }
+  
+  Proxy.remoteMethod('sendCampaignToQueue', {
+    description: [
+      'Send a campaign message to SQS.',
+    ],
+    http: { path: '/sendCampaignToQueue', verb: 'post' },
+    accepts: [
+      { arg: 'message', type: 'any', http: { source: 'body' } },
+    ],
+    returns: [
+      { arg: 'data', type: 'any' },
+    ]
+  })
 
   Proxy.sendLeadSMSMessage = (body, to, from, aId, leadId, cb) => {
     const { Message, Lead } = Proxy.app.models;

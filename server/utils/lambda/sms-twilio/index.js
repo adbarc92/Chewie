@@ -1,4 +1,4 @@
-const client = require('twilio')(process.env.accountSid, process.env.authToken);
+const client = require('twilio')(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN);
 
 exports.handler = (event, context, callback) => {
   const { to, from } = event.Records[0].messageAttributes;
@@ -10,6 +10,6 @@ exports.handler = (event, context, callback) => {
       to: to.stringValue
     })
     .then(() => callback(null, 'Message Sent'))
-    .catch(err => console.log(err))
+    .catch(err => callback(err))
     .done();
 };

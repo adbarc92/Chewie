@@ -1,6 +1,6 @@
-const { startAgenda } = require('../../server/utils/sqs');
+// const { startAgenda } = require('../../server/utils/sqs');
 
-startAgenda();
+// startAgenda();
 
 module.exports = (app) => {
   const User = app.models.user;

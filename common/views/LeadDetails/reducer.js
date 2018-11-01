@@ -16,6 +16,9 @@ export default function (state = { details: {} }, action = {}) {
       return { ...state, hubspotCommentSent: action.payload };
     case 'SEND_COMMENT_TO_HUBSPOT_REJECTED':
       return { ...state, error: action.payload };
+      case 'UPDATE_LEAD_MESSAGE':
+      return { ...state, leadMessage: action.payload };
+
     default:
       return state;
   }

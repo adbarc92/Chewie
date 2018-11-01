@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 const Agenda = require('agenda');
-const { Account, DNC, Message } = require('../../server').models;
+const { Account, DNC, Message, UnsentMessage } = require('../../server').models;
 
 AWS.config.update({ region: 'us-west-1' });
 const sqs = new AWS.SQS({ apiVersion: '2012-11-05' });
@@ -112,8 +112,60 @@ agenda.define('receiveResponseQueue', () => {
   });
 });
 
+agenda.define('receiveUnsentQueue', () => {
+  const params = {
+    AttributeNames: [
+      'SentTimestamp'
+    ],
+    MaxNumberOfMessages: 10,
+    MessageAttributeNames: [
+      'All'
+    ],
+    QueueUrl: process.env.UNSENT_MESSAGES_QUEUE,
+    VisibilityTimeout: 20,
+    WaitTimeSeconds: 20
+  };
+
+  sqs.receiveMessage(params, (err, data) => {
+    if (err) {
+      console.log('Receive Error', err);
+    } else if (data.Messages) {
+      data.Messages.forEach((message) => {
+        const { from, to } = message.MessageAttributes;
+
+        Account.getAccountByPhone(from.StringValue.replace('+1', ''))
+          .then((account) => {
+            UnsentMessage.create({
+              to: to.StringValue.replace('+1', ''),
+              fr: from.StringValue.replace('+1', ''),
+              tx: message.Body,
+              aId: account,
+            })
+            .then(() => {
+              const deleteParams = {
+                QueueUrl: process.env.UNSENT_MESSAGES_QUEUE,
+                ReceiptHandle: message.ReceiptHandle
+              };
+
+              sqs.deleteMessage(deleteParams, (error, datas) => {
+                if (error) {
+                  console.log('Delete Error', err);
+                } else {
+                  console.log('Response Message Deleted', datas);
+                }
+              });
+            })
+            .catch(errors => console.log('Message.create', errors))
+          })
+          .catch(error => console.log('getAccountByPhone', error))
+      });
+    }
+  });
+});
+
 module.exports = {
   sendCampaignMessages(campaign) {
+    console.log("campaign",campaign);
     const { leads, fr, message } = campaign;
     let delaySeconds = 1;
 
@@ -130,7 +182,7 @@ module.exports = {
             StringValue: `+1${fr}`
           },
         },
-        MessageBody: message,
+        MessageBody: message.replace('FIRST_NAME', lead.fn ? lead.fn  : '').replace('LAST_NAME', lead.ln ? lead.ln  : ''),
         QueueUrl: process.env.SEND_TO_TWILIO_QUEUE
       };
 
@@ -149,7 +201,7 @@ module.exports = {
   startAgenda() {
     agenda.on('ready', () => {
       console.log('Agenda Ready');
-      agenda.every('1 minute', ['receiveDncQueue', 'receiveResponseQueue']);
+      agenda.every('1 minute', ['receiveDncQueue', 'receiveResponseQueue', 'receiveUnsentQueue']);
       agenda.start();
     });
   }

@@ -8,6 +8,7 @@ function mapStateToProps({ leadDetails, user, form }) {
   return {
     details: leadDetails.details,
     messages: leadDetails.messages,
+    leadMessage: leadDetails.leadMessage,
     user,
     form
   };
