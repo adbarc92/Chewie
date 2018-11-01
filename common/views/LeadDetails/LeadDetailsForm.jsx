@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import './LeadDetailsForm.css';
 
 let LeadDetailsForm = (props) => {
-  const { handleSubmit, handleSave, handleHubSpot, status } = props;
+  const { handleSubmit, handleSave, handleHubSpot, status, handleMessageInput, leadMessage, handleSendSms } = props;
 
   return (
     <form onSubmit={handleSubmit}>
@@ -37,7 +37,7 @@ let LeadDetailsForm = (props) => {
           <label htmlFor="dnc">Do Not Call</label>
       </div>
       <div className="form-group row">
-        <div className="col-sm-12">
+        <div className="col-sm-6">
           <label htmlFor="accountabilityPartnerComment">Comments</label>
           <br/>
           <Field
@@ -47,10 +47,23 @@ let LeadDetailsForm = (props) => {
           />
         </div>
       </div>
-
+      <div className="form-group row">
+        <div className="col-sm-4">
+          <label htmlFor="accountabilityPartnerComment">Message</label>
+          <br/>
+          <textarea
+           type='text'
+            id="message Box"
+            value = {leadMessage}
+            onChange={handleMessageInput}
+          />
+        </div>
+      </div>
+      
       <button className="btn btn-info" onClick={handleSave}>Save</button>
       <button className="btn btn-info" type="submit">Save & Close</button>
       <button className="btn btn-info" onClick={handleHubSpot}>Post to HubSpot</button>
+      <button className="btn btn-info" onClick={handleSendSms}>Send SMS</button>
 
       <span className="status-indicator">
         { status === 'busy' ?

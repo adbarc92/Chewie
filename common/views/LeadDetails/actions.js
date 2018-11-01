@@ -4,6 +4,7 @@ export const GET_LEAD_DETAILS = 'GET_LEAD_DETAILS';
 export const GET_MESSAGES = 'GET_MESSAGES';
 export const SAVE_LEAD_DETAILS = 'SAVE_LEAD_DETAILS';
 export const SEND_COMMENT_TO_HUBSPOT = 'SEND_COMMENT_TO_HUBSPOT';
+ export const UPDATE_LEAD_MESSAGE = 'UPDATE_LEAD_MESSAGE'
 
 export function getLeadDetails(id, token) {
   return {
@@ -29,6 +30,16 @@ export function saveLeadDetails(data, token) {
     })
   };
 }
+
+export function messageInput(leadMessage) {
+  return {
+    type: UPDATE_LEAD_MESSAGE,
+    payload: {
+      leadMessage
+    }
+  };
+}
+
 
 export function getMessages(id, token) {
   return {

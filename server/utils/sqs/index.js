@@ -114,6 +114,7 @@ agenda.define('receiveResponseQueue', () => {
 
 module.exports = {
   sendCampaignMessages(campaign) {
+    console.log("campaign",campaign);
     const { leads, fr, message } = campaign;
     let delaySeconds = 1;
 

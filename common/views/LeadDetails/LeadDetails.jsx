@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import LeadDetailsForm from './LeadDetailsForm';
-import { getMessages } from './actions';
+import { getMessages, messageInput } from './actions';
 import Table from './Table';
+import axios from 'axios';
 
 export default class LeadDetails extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleMessageInput = this.handleMessageInput.bind(this);
+    this.handleSendSms = this.handleSendSms.bind(this);
+
     this.state = {
       status: "ready",
       message: 'Ready'
@@ -44,6 +48,36 @@ export default class LeadDetails extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.saveLeadDetails(true);
+  }
+
+  handleMessageInput = (event) => {
+    const { dispatch } = this.props;
+    const { value } = event.target;
+    this.props.messageInput(value);
+   
+  }
+
+  handleSendSms(event) {
+    event.preventDefault()
+    const { leadMessage } = this.props;
+
+    const campaignMessage = {
+      leads: [
+        {ph:this.props.details.ph,
+          fn: this.props.details.fn,
+          ln: this.props.details.ln,
+        },
+      ],
+      // fr: '8507532018',
+      fr: process.env.ADMIN_MOBILE,
+      message: leadMessage.leadMessage,
+    }
+    console.log('client', campaignMessage)
+    axios.post('/api/Proxies/sendCampaignToQueue', campaignMessage )
+    .then( res => console.log('message sent'))
+    .catch(function (error) {
+      console.log(error);
+    });
   }
 
   handleSave = (e) => {
@@ -94,9 +128,10 @@ export default class LeadDetails extends Component {
   }
 
   render() {
+    
     const mockProfile = { profile: { displayName: 'none' } };
     const { profile } = this.props.user.profiles[0] || mockProfile;
-    const { user, message, messages } = this.props;
+    const { user, message, messages, leadMessage } = this.props;
     return (
       <div>
         <h1>Lead</h1>
@@ -108,7 +143,12 @@ export default class LeadDetails extends Component {
                   status={this.state.status}
                   handleSubmit={this.handleSubmit}
                   handleSave={this.handleSave}
-                  handleHubSpot={this.handleHubSpot} />
+                  handleHubSpot={this.handleHubSpot}
+                  handleSendSms={this.handleSendSms}
+                  handleMessageInput={this.handleMessageInput}
+                  leadMessage={this.leadMessage}
+                 
+                   />
               </div>
               <div className="col-sm-6">
                 <pre>{this.getJSONStr()}</pre>

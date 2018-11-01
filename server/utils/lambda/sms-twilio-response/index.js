@@ -18,7 +18,7 @@ exports.handler = (event, context, callback) => {
       }
     },
     MessageBody: event.Body,
-    QueueUrl: process.env.saveUserDncQueue
+    QueueUrl: process.env.SAVE_USER_DNC_QUEUE
   } :
   {
     DelaySeconds: 0,
@@ -33,7 +33,7 @@ exports.handler = (event, context, callback) => {
       }
     },
     MessageBody: event.Body,
-    QueueUrl: process.env.saveUserResponseQueue
+    QueueUrl: process.env.SAVE_USER_RESPONSE_QUEUE
   };
 
   sqs.sendMessage(params, (err, data) => {
