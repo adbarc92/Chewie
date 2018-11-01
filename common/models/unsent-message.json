@@ -1,0 +1,47 @@
+{
+  "name": "UnsentMessage",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "to": {
+      "type": "string",
+      "required": true,
+      "description": "to phone or email"
+    },
+    "fr": {
+      "type": "string",
+      "required": true,
+      "description": "from phone or email"
+    },
+    "tx": {
+      "type": "string",
+      "required": true,
+      "description": "text body of the message"
+    },
+    "sb": {
+      "type": "string",
+      "description": "subject line of the message"
+    },
+    "sc": {
+      "type": "number",
+      "description": "sentiment score"
+    },
+    "rv": {
+      "type": "boolean",
+      "description": "was reviewed"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "account": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "aId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

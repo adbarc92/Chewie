@@ -10,6 +10,6 @@ exports.handler = (event, context, callback) => {
       to: to.stringValue
     })
     .then(() => callback(null, 'Message Sent'))
-    .catch(err => console.log(err))
+    .catch(err => callback(err))
     .done();
 };

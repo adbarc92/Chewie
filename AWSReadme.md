@@ -1,65 +1,164 @@
 All services are pointed to the US West (N. California) server.
 
-IAM
+# IAM
 - Create a new IAM role
-- Select Roles then Create role
-- Select Lambda as the service.
-- Select AWSLambdaFullAcces policy.
+- Select Roles on the left and click Create Role
+- Select Lambda as the service. 
+- Click Next.
+- Search for and select AWSLambdaFullAcces policy. 
+- Click Next
 - Create a role name.
+- Click Create Role
 
 
-SQS
-- Create queue to send Twilio message to Lambda
-- Use default settings
-- Create permissions
+# SQS
 
-- Create queue to receive DNC message
-- Add 20 second Receive Message Wait Time
-- Create permissions
+### unsent-messages-queue
+- Click Create New Queue
+- Queue Name --> `unsent-messages-queue`
+- Receive Message Wait Time `20`
+- Click Create Queue
+- Click Permissions and Add a Permission
+- [x] Everybody 
+- [x] All SQS Actions
+- Click Add Permissions
 
-- Create queue to receive user response
-- Add 20 second Receive Message Wait Time
-- Create permissions
+### queue-sms-to-twilio
+- Click Create New Queue
+- Queue Name --> `queue-sms-to-twilio`
+- [x] Use Redrive Policy
+- Dead Letter Queue `unsent-messages-queue`
+- Maximum Receives `2`
+- Click Create Queue
+- Click Permissions and Add a Permission
+- [x] Everybody 
+- [x] All SQS Actions
+- Click Add Permissions
+
+### twilio-dnc-to-queue
+- Click Create New Queue
+- Queue Name --> `twilio-dnc-to-queue`
+- Receive Message Wait Time `20`
+- Click Create Queue
+- Click Permissions and Add a Permission
+- [x] Everybody 
+- [x] All SQS Actions
+- Click Add Permissions
+
+### twilio-response-to-queue
+- Click Create New Queue
+- Queue Name --> `twilio-response-to-queue`
+- Receive Message Wait Time `20`
+- Click Create Queue
+- Click Permissions and Add a Permission
+- [x] Everybody 
+- [x] All SQS Actions
+- Click Add Permissions
 
 
-Lambda
+# Lambda
 
-Send Message To Twilio
-- Go to lambda service.
+### Sending sms to Twilio
+- Go to lambda.
 - Select Create function
-- Create function name for function to send Twilio message. 
+- Author from scratch
+- Name --> `send-sms-to-twilio` 
 - Select previous IAM existing role.
-- Zip all files in ~/server/utils/Lambda/Twilio
-- In Lambda under Function code, select Upload a .zip file dropdown.
+- Zip all files in `~/server/utils/Lambda/sms-twilio`
+- In Lambda under Function code, Code entry type, select Upload a .zip file dropdown.
+- Choose the sms-twilio .zip file
+- Save
 - Add environment variables.
-  - accountSid
-  - authToken
-- Add SQS trigger for message to twilio queue
-- Add SQS queue as dead letter queue
+  - `accountSid`
+  - `authToken`
+- Save
+- Click SQS trigger.
+- For SQS queue choose `queue-sms-to-twilio`
+- Batch size `10`
+- Click Add
 
-Receive Response from Twilio
-- Repeat first five steps above.
-- Zip  and upload all files in ~/server/utils/Lambda/TwilioResponse
+##### Tests
+- Go back to main page and select Select a test event...
+- Configure test events
+- Create new test event
+- Create new Event name
+- Add to test body
+```javascript
+{
+  "Records": [
+    {
+      "messageAttributes": {
+        "to": {
+          "stringValue": "+1YOUR_PHONE_NUMBER_HERE"
+        },
+        "from": {
+          "stringValue": "+1TWILIO_PHONE_NUMBER_HERE"
+        }
+      },
+      "body": "Testing Lambda Function"
+    }
+  ]
+}
+```
+- Save
+
+### Receive Response from Twilio
+- Go to lambda.
+- Select Create function
+- Author from scratch
+- Name --> `receive-response-from-twilio` 
+- Select previous IAM existing role.
+- Zip  and upload all files in `~/server/utils/Lambda/sms-twilio-response`
 - Add environment variables for SQS queues.
-  - *SQS queue to send users DNC request*
-  - *SQS queue to send all other users responses*
+  - `saveUserDncQueue` --> twilio-dnc-to-queue URL
+  - `saveUserResponseQueue` --> twilio-response-to-queue URL
 - Select API gateway trigger.
-  - Create new API
+  - Create a new API
   - AWS IAM Security
   - Create API Name
+  - Click Add
+- Under API Gateway
 - Select API
-- Create new Method Action POST.
-- Select your Lambda function to be invoked on POST
+- Click Actions and click Create Method
+- Select POST
+- Under Lambda Function select your Lambda
 - Click Integration Request.
-- Create new Mapping Template
-  - Content-Type - application/x-www-form-urlencoded
+- Click Create new Mapping Template
+  - Content-Type - `application/x-www-form-urlencoded`
   - Use -- Template Code -- at the bottom of document.
 - Set this API endpoint as the webhook for Twilio
-  
+
+##### Tests
+- Go back to main page and select Select a test event...
+- Configure test events
+- Create new test event to test sending to `twilio-response-to-queue`
+- Create new Event name 
+- Add to test body
+```javascript
+{
+  "Body": "Testing twilio-response-to-queue",
+  "To": "+15554443333",
+  "From": "+19998887777"
+}
+```
+- Save
+- Configure another test event
+- Create new test event to test sending to `twilio-dnc-to-queue`
+- Create new Event name 
+- Add to test body
+```javascript
+{
+  "Body": "Stop",
+  "To": "+15554443333",
+  "From": "+19998887777"
+}
+```
+- Save
 
 
--- Template Code --
+##### Template Code
 
+```javascript
 #if ($context.httpMethod == "POST")
  #set($rawAPIData = $input.path('$'))
 #elseif ($context.httpMethod == "GET")
@@ -98,3 +197,4 @@ Receive Response from Twilio
  "$util.urlDecode($kvTokenised[0])" : #if($kvTokenised[1].length() > 0)"$util.urlDecode($kvTokenised[1])"#{else}""#end#if( $foreach.hasNext ),#end
 #end
 }
+```

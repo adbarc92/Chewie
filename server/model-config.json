@@ -105,5 +105,16 @@
         }
       }
     }
+  },
+  "UnsentMessage": {
+    "dataSource": "MongoDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "*": true
+        }
+      }
+    }
   }
 }
