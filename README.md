@@ -1,7 +1,7 @@
 # Chewie
 
-A UI to manage SMS marketing campaigns.
-_This application was developed by many students of Origin Code Academy, and is reproduced here for the sake of providing context to my own contributions._
+A UI to manage SMS marketing campaigns.  
+**This application was developed by many students of Origin Code Academy, and is reproduced here for the sake of providing context to my own contributions.**
 
 ## Setup
 
