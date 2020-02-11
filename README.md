@@ -1,6 +1,7 @@
 # Chewie
 
 A UI to manage SMS marketing campaigns.
+_This application was developed by many students of Origin Code Academy, and is reproduced here for the sake of providing context to my own contributions._
 
 ## Setup
 
@@ -11,26 +12,26 @@ $ npm install
 You will need to create a file called `credentials.js` in the root folder with the following values:
 
 ```javascript
-process.env.SECRET_COOKIE=''; // can be any value, just sets a unique hash for cookie auth
-process.env.MONGO_HOST=''; // host for development/staging mongo
-process.env.MONGO_PORT=''; // port for development/staging mongo
-process.env.MONGODB_URI=''; // full url for production mongo
-process.env.SENDGRID_API='';
-process.env.GITHUB_CALLBACK_URL='';
-process.env.ADMIN_PASSWORD='';
-process.env.ADMIN_EMAIL='';
-process.env.LOGGLY_TOKEN='';
-process.env.HUBSPOT_ID=''; // unique value for the account
-process.env.HUBSPOT_API='';
-process.env.PORT=''; // port for the app
-process.env.GOOGLE_CLIENT_ID1='';
-process.env.GOOGLE_CLIENT_SECRET1='';
-process.env.GOOGLE_CLIENT_ID2='';
-process.env.GOOGLE_CLIENT_SECRET2='';
-process.env.GITHUB_CLIENT_ID1='';
-process.env.GITHUB_CLIENT_SECRET1='';
-process.env.GITHUB_CLIENT_ID2='';
-process.env.GITHUB_CLIENT_SECRET2='';
+process.env.SECRET_COOKIE = ""; // can be any value, just sets a unique hash for cookie auth
+process.env.MONGO_HOST = ""; // host for development/staging mongo
+process.env.MONGO_PORT = ""; // port for development/staging mongo
+process.env.MONGODB_URI = ""; // full url for production mongo
+process.env.SENDGRID_API = "";
+process.env.GITHUB_CALLBACK_URL = "";
+process.env.ADMIN_PASSWORD = "";
+process.env.ADMIN_EMAIL = "";
+process.env.LOGGLY_TOKEN = "";
+process.env.HUBSPOT_ID = ""; // unique value for the account
+process.env.HUBSPOT_API = "";
+process.env.PORT = ""; // port for the app
+process.env.GOOGLE_CLIENT_ID1 = "";
+process.env.GOOGLE_CLIENT_SECRET1 = "";
+process.env.GOOGLE_CLIENT_ID2 = "";
+process.env.GOOGLE_CLIENT_SECRET2 = "";
+process.env.GITHUB_CLIENT_ID1 = "";
+process.env.GITHUB_CLIENT_SECRET1 = "";
+process.env.GITHUB_CLIENT_ID2 = "";
+process.env.GITHUB_CLIENT_SECRET2 = "";
 ```
 
 ## Tests
@@ -50,7 +51,7 @@ npm start
 The default admin username is `admin`. You must set the admin's default password via an environment variable (or in the credentials file):
 
 ```javascript
-process.env.ADMIN_PASSWORD='';
+process.env.ADMIN_PASSWORD = "";
 ```
 
 ## Contracts
