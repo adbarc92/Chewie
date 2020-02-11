@@ -73,3 +73,17 @@ To use local strategy you must verify the email address.
 
 [Loopback](https://github.com/mikedeboer/node-github)
 [node-github](https://github.com/mikedeboer/node-github)
+
+## Acknowledgments:
+
+* Guidance and Instruction: 
+	* Anthony Valera
+	* Mike Roberts
+* Contributors:
+	* Eric Dodds
+	* Jake Espino
+	* Olga Volodko
+	* Kaiya Walker
+	* Vance Pope
+	* Benjamin Sims
+
